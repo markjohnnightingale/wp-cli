@@ -90,7 +90,13 @@ class Help_Command extends WP_CLI_Command {
 	}
 
 	private static function pass_through_pager( $out ) {
-
+		
+		if ( ! function_exists( 'proc_open' ) ) {
+			// proc_open desabled by system
+			echo $out;
+			return 0;
+		}
+		
 		if ( false === ( $pager = getenv( 'PAGER' ) ) ) {
 			$pager = Utils\is_windows() ? 'more' : 'less -r';
 		}
